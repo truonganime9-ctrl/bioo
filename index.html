@@ -20,6 +20,12 @@ height:100vh;
 overflow:hidden;
 background:#0b0b10;
 color:white;
+animation:fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn{
+from{opacity:0}
+to{opacity:1}
 }
 
 /* ================= LOADING ================= */
@@ -88,7 +94,7 @@ inset:0;
 width:100%;
 height:100%;
 object-fit:cover;
-z-index:-2;
+z-index:-3;
 filter:brightness(0.5);
 }
 
@@ -96,7 +102,7 @@ filter:brightness(0.5);
 position:fixed;
 inset:0;
 background:rgba(0,0,0,0.4);
-z-index:-1;
+z-index:-2;
 }
 
 /* ================= MAIN ================= */
@@ -118,6 +124,14 @@ background:rgba(255,255,255,0.06);
 backdrop-filter:blur(10px);
 box-shadow:0 10px 25px rgba(0,0,0,0.5);
 text-align:center;
+animation:float 4s ease-in-out infinite;
+position:relative;
+}
+
+@keyframes float{
+0%{transform:translateY(0px)}
+50%{transform:translateY(-6px)}
+100%{transform:translateY(0px)}
 }
 
 /* AVATAR */
@@ -169,14 +183,39 @@ transition:0.2s;
 background:rgba(255,255,255,0.15);
 }
 
-/* MUSIC */
-.musicBox{
-margin-top:10px;
+.btn:active{
+transform:scale(0.96);
+box-shadow:0 0 10px white;
 }
 
-.musicBox input{
-width:100%;
-margin-top:6px;
+/* ================= STAR ================= */
+.star{
+position:fixed;
+width:2px;
+height:2px;
+background:white;
+border-radius:50%;
+opacity:0.5;
+animation:starMove 6s linear infinite;
+z-index:-1;
+}
+
+@keyframes starMove{
+from{transform:translateY(100vh)}
+to{transform:translateY(-10vh)}
+}
+
+/* ================= CURSOR ================= */
+#cursor{
+position:fixed;
+width:12px;
+height:12px;
+border-radius:50%;
+background:white;
+mix-blend-mode:difference;
+pointer-events:none;
+transform:translate(-50%,-50%);
+z-index:99999;
 }
 
 </style>
@@ -186,13 +225,9 @@ margin-top:6px;
 
 <!-- LOADING -->
 <div id="loading">
-
 <div class="spinner"></div>
-
 <div class="loadingText">Loading system...</div>
-
 <div class="loader"><span></span></div>
-
 </div>
 
 <!-- BACKGROUND -->
@@ -201,6 +236,9 @@ margin-top:6px;
 </video>
 
 <div class="overlay"></div>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
 
 <!-- MAIN -->
 <div id="main">
@@ -220,17 +258,16 @@ margin-top:6px;
 <a class="btn" href="https://discord.gg/cpY8dFhN">Discord</a>
 
 <button class="btn" onclick="copyDiscord()">Copy Discord</button>
+
 <button class="btn" onclick="toggleMusic()">Play / Pause</button>
 
 <div class="musicBox">
-
 <audio id="music" loop>
 <source src="./music.mp3" type="audio/mpeg">
 </audio>
 
 <input type="range" min="0" max="1" step="0.01" value="0.5"
 onchange="setVolume(this.value)">
-
 </div>
 
 </div>
@@ -246,23 +283,20 @@ document.getElementById("main").style.display="flex";
 },2000);
 
 /* CLOCK */
-function updateClock(){
-const now=new Date();
+setInterval(()=>{
+const d=new Date();
 
-let h=now.getHours();
-let m=now.getMinutes();
-let s=now.getSeconds();
+let h=d.getHours();
+let m=d.getMinutes();
+let s=d.getSeconds();
 
 h=h<10?"0"+h:h;
 m=m<10?"0"+m:m;
 s=s<10?"0"+s:s;
 
-document.getElementById("clock").innerText =
+document.getElementById("clock").innerText=
 h+":"+m+":"+s;
-}
-
-setInterval(updateClock,1000);
-updateClock();
+},1000);
 
 /* COPY */
 function copyDiscord(){
@@ -281,6 +315,25 @@ else music.pause();
 function setVolume(v){
 music.volume=v;
 }
+
+/* CURSOR */
+document.addEventListener("mousemove",(e)=>{
+let c=document.getElementById("cursor");
+c.style.left=e.clientX+"px";
+c.style.top=e.clientY+"px";
+});
+
+/* STAR EFFECT */
+function createStars(){
+setInterval(()=>{
+let s=document.createElement("div");
+s.className="star";
+s.style.left=Math.random()*100+"vw";
+document.body.appendChild(s);
+setTimeout(()=>s.remove(),6000);
+},120);
+}
+createStars();
 
 </script>
 
