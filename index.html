@@ -12,119 +12,109 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial;
+font-family:system-ui, Arial;
 }
 
-/* ===== VIDEO BACKGROUND ===== */
-video.bg{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-object-fit:cover;
-z-index:-2;
-filter:brightness(0.7) blur(1px);
-}
-
-/* DARK OVERLAY */
-.overlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.35);
-z-index:-1;
-}
-
-/* ===== CENTER CARD ===== */
-.card{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:90%;
-max-width:360px;
-padding:20px;
-border-radius:20px;
-
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(15px);
-
-box-shadow:0 0 25px rgba(255,255,255,0.2);
-text-align:center;
+body{
+background:#0b0b10;
 color:white;
-
-animation:float 4s ease-in-out infinite;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
 }
 
-@keyframes float{
-0%{transform:translate(-50%,-50%) translateY(0px);}
-50%{transform:translate(-50%,-50%) translateY(-10px);}
-100%{transform:translate(-50%,-50%) translateY(0px);}
+/* ===== CARD ===== */
+.card{
+width:90%;
+max-width:380px;
+background:#18181c;
+border-radius:18px;
+overflow:hidden;
+box-shadow:0 10px 25px rgba(0,0,0,0.6);
+animation:fade 0.4s ease;
 }
 
-/* ===== AVATAR ===== */
-.avatar{
-width:110px;
-height:110px;
-border-radius:50%;
-border:3px solid white;
-box-shadow:0 0 20px pink;
+@keyframes fade{
+from{opacity:0;transform:translateY(10px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+/* ===== COVER ===== */
+.cover{
+width:100%;
+height:140px;
 object-fit:cover;
 }
 
-/* ===== TEXT ===== */
-h1{
-margin-top:10px;
+/* ===== PROFILE ===== */
+.profile{
+display:flex;
+align-items:center;
+gap:12px;
+padding:15px;
 }
 
-.typing{
-margin:10px 0;
-min-height:20px;
-color:#fff;
+.avatar{
+width:62px;
+height:62px;
+border-radius:50%;
+border:2px solid white;
+object-fit:cover;
 }
 
-.time{
-font-size:14px;
-margin-bottom:10px;
+.name{
+font-size:18px;
+font-weight:700;
+}
+
+.desc{
+font-size:13px;
+opacity:0.7;
+margin-top:2px;
+}
+
+/* ===== INFO ===== */
+.info{
+padding:0 15px 10px;
+font-size:13px;
 opacity:0.8;
 }
 
 /* ===== BUTTONS ===== */
-a,button{
-display:block;
-margin:8px 0;
-padding:10px;
+.buttons{
+padding:10px 15px 15px;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.btn{
+width:100%;
+padding:11px;
 border:none;
 border-radius:10px;
-cursor:pointer;
-text-decoration:none;
+background:#26262c;
 color:white;
-background:rgba(0,0,0,0.4);
-transition:0.3s;
+text-align:center;
+text-decoration:none;
+cursor:pointer;
+font-size:14px;
+transition:0.2s;
+box-sizing:border-box;
 }
 
-a:hover,button:hover{
-transform:scale(1.05);
-background:rgba(255,255,255,0.2);
+.btn:hover{
+transform:scale(1.03);
+background:#3a3a40;
 }
 
-/* ===== GLASS BORDER EFFECT ===== */
-.card::before{
-content:"";
-position:absolute;
-inset:0;
-border-radius:20px;
-padding:2px;
-background:linear-gradient(45deg,#ff9a9e,#a18cd1,#fad0c4,#fbc2eb);
--webkit-mask:
-linear-gradient(#fff 0 0) content-box,
-linear-gradient(#fff 0 0);
--webkit-mask-composite:xor;
-mask-composite:exclude;
-z-index:-1;
+/* ===== SMALL TAG ===== */
+.tag{
+font-size:12px;
+opacity:0.6;
+padding:0 15px;
+margin-top:8px;
 }
 
 </style>
@@ -132,57 +122,58 @@ z-index:-1;
 
 <body>
 
-<!-- 🎬 VIDEO BACKGROUND (MotionBGS mp4) -->
-<video class="bg" autoplay muted loop playsinline>
-<source src="bg.mp4" type="video/mp4">
-</video>
-
-<div class="overlay"></div>
-
-<!-- 💎 CARD -->
 <div class="card">
 
-<img class="avatar" src="avatar.jpg">
+<!-- COVER -->
+<img class="cover" src="https://images.unsplash.com/photo-1503264116251-35a269479413">
 
-<h1>Chuuong Dao</h1>
+<!-- PROFILE -->
+<div class="profile">
 
-<div class="typing" id="typing"></div>
+<!-- LOCAL AVATAR -->
+<img class="avatar" src="./avatar.jpg">
 
-<div class="time" id="time"></div>
+<div>
+<div class="name">Chuuong Dao</div>
+<div class="desc">Developer • Gamer • Bio</div>
+</div>
 
-<a href="https://web.facebook.com/tr.dao91">Facebook</a>
-<a href="https://www.tiktok.com/@chia_tay_la_gi">TikTok</a>
-<a href="https://discord.gg/cpY8dFhN">Discord Server</a>
+</div>
 
-<button onclick="copy()">Copy Discord</button>
+<div class="tag">Links</div>
+
+<div class="info">
+muốn mua code thì vào link bên dưới 👇
+</div>
+
+<!-- BUTTONS -->
+<div class="buttons">
+
+<a class="btn" href="https://web.facebook.com/tr.dao91" target="_blank">📘 Facebook</a>
+
+<a class="btn" href="https://www.tiktok.com/@chia_tay_la_gi" target="_blank">🎵 TikTok</a>
+
+<a class="btn" href="https://discord.gg/cpY8dFhN" target="_blank">💬 Discord Server</a>
+
+<button class="btn" onclick="copyDiscord()">📋 Copy Discord</button>
+
+<button class="btn" onclick="shop()">🛒 Shop Code</button>
+
+</div>
 
 </div>
 
 <script>
 
-/* ===== TYPING ===== */
-let text="Developer • Gamer • Cute Bio 💗";
-let i=0;
-
-function typing(){
-if(i<text.length){
-document.getElementById("typing").innerHTML+=text[i];
-i++;
-setTimeout(typing,70);
-}
-}
-typing();
-
-/* ===== CLOCK ===== */
-setInterval(()=>{
-document.getElementById("time").innerText=
-new Date().toLocaleTimeString();
-},1000);
-
-/* ===== COPY ===== */
-function copy(){
+/* COPY DISCORD */
+function copyDiscord(){
 navigator.clipboard.writeText("truongdzz1319");
 alert("Copied Discord!");
+}
+
+/* SHOP */
+function shop(){
+alert("Shop đang phát triển!");
 }
 
 </script>
