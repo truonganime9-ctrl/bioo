@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bio</title>
+<title>Bio VIP+</title>
 
 <style>
 
@@ -18,73 +18,91 @@ font-family:system-ui, Arial;
 body{
 height:100vh;
 overflow:hidden;
-background:#0b0b10;
 color:white;
-animation:fadeIn 0.8s ease;
+background:#0b0b10;
 }
 
-@keyframes fadeIn{
-from{opacity:0}
-to{opacity:1}
-}
-
-/* ================= LOADING ================= */
+/* ================= LOADING VIP+ ================= */
 #loading{
 position:fixed;
 inset:0;
-background:#0b0b10;
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
 z-index:9999;
+
+background:linear-gradient(135deg,#0b0b10,#111827,#0b0b10);
 }
 
-.spinner{
-width:28px;
-height:28px;
-border:3px solid rgba(255,255,255,0.15);
-border-top:3px solid white;
-border-radius:50%;
-animation:spin 1s linear infinite;
-margin-bottom:10px;
+.logoPulse{
+font-size:42px;
+font-weight:800;
+letter-spacing:3px;
+animation:pulse 1.6s infinite;
 }
 
-@keyframes spin{
-to{transform:rotate(360deg)}
+@keyframes pulse{
+0%{transform:scale(1);opacity:0.6}
+50%{transform:scale(1.1);opacity:1}
+100%{transform:scale(1);opacity:0.6}
 }
 
 .loadingText{
 font-size:14px;
-letter-spacing:1px;
-opacity:0.7;
-animation:fade 1.2s ease-in-out infinite alternate;
+opacity:0.75;
+margin-top:6px;
 }
 
-@keyframes fade{
-from{opacity:0.3}
-to{opacity:1}
+.dots{
+display:flex;
+gap:6px;
+margin:12px 0;
 }
 
-.loader{
-width:200px;
+.dots span{
+width:7px;
+height:7px;
+border-radius:50%;
+background:white;
+animation:bounce 0.6s infinite alternate;
+}
+
+.dots span:nth-child(2){animation-delay:0.2s}
+.dots span:nth-child(3){animation-delay:0.4s}
+
+@keyframes bounce{
+from{transform:translateY(0);opacity:0.4}
+to{transform:translateY(-6px);opacity:1}
+}
+
+.bar{
+width:220px;
 height:4px;
-background:rgba(255,255,255,0.08);
+background:rgba(255,255,255,0.1);
 border-radius:10px;
 overflow:hidden;
-margin-top:12px;
+margin-top:8px;
 }
 
-.loader span{
+.bar span{
 display:block;
 height:100%;
 width:0%;
-background:white;
+background:linear-gradient(90deg,#fff,#9ca3af,#fff);
 animation:load 2s ease forwards;
 }
 
 @keyframes load{
 to{width:100%}
+}
+
+.fadeOut{
+animation:fadeOut 0.5s ease forwards;
+}
+
+@keyframes fadeOut{
+to{opacity:0;visibility:hidden}
 }
 
 /* ================= BACKGROUND ================= */
@@ -94,7 +112,7 @@ inset:0;
 width:100%;
 height:100%;
 object-fit:cover;
-z-index:-3;
+z-index:-2;
 filter:brightness(0.5);
 }
 
@@ -102,7 +120,7 @@ filter:brightness(0.5);
 position:fixed;
 inset:0;
 background:rgba(0,0,0,0.4);
-z-index:-2;
+z-index:-1;
 }
 
 /* ================= MAIN ================= */
@@ -124,14 +142,6 @@ background:rgba(255,255,255,0.06);
 backdrop-filter:blur(10px);
 box-shadow:0 10px 25px rgba(0,0,0,0.5);
 text-align:center;
-animation:float 4s ease-in-out infinite;
-position:relative;
-}
-
-@keyframes float{
-0%{transform:translateY(0px)}
-50%{transform:translateY(-6px)}
-100%{transform:translateY(0px)}
 }
 
 /* AVATAR */
@@ -183,11 +193,6 @@ transition:0.2s;
 background:rgba(255,255,255,0.15);
 }
 
-.btn:active{
-transform:scale(0.96);
-box-shadow:0 0 10px white;
-}
-
 /* ================= STAR ================= */
 .star{
 position:fixed;
@@ -205,19 +210,6 @@ from{transform:translateY(100vh)}
 to{transform:translateY(-10vh)}
 }
 
-/* ================= CURSOR ================= */
-#cursor{
-position:fixed;
-width:12px;
-height:12px;
-border-radius:50%;
-background:white;
-mix-blend-mode:difference;
-pointer-events:none;
-transform:translate(-50%,-50%);
-z-index:99999;
-}
-
 </style>
 </head>
 
@@ -225,9 +217,17 @@ z-index:99999;
 
 <!-- LOADING -->
 <div id="loading">
-<div class="spinner"></div>
-<div class="loadingText">Loading system...</div>
-<div class="loader"><span></span></div>
+
+<div class="logoPulse">BIO</div>
+
+<div class="loadingText">Loading profile</div>
+
+<div class="dots">
+<span></span><span></span><span></span>
+</div>
+
+<div class="bar"><span></span></div>
+
 </div>
 
 <!-- BACKGROUND -->
@@ -236,9 +236,6 @@ z-index:99999;
 </video>
 
 <div class="overlay"></div>
-
-<!-- CURSOR -->
-<div id="cursor"></div>
 
 <!-- MAIN -->
 <div id="main">
@@ -259,17 +256,6 @@ z-index:99999;
 
 <button class="btn" onclick="copyDiscord()">Copy Discord</button>
 
-<button class="btn" onclick="toggleMusic()">Play / Pause</button>
-
-<div class="musicBox">
-<audio id="music" loop>
-<source src="./music.mp3" type="audio/mpeg">
-</audio>
-
-<input type="range" min="0" max="1" step="0.01" value="0.5"
-onchange="setVolume(this.value)">
-</div>
-
 </div>
 
 </div>
@@ -278,8 +264,14 @@ onchange="setVolume(this.value)">
 
 /* LOADING */
 setTimeout(()=>{
-document.getElementById("loading").style.display="none";
+let load=document.getElementById("loading");
+load.classList.add("fadeOut");
+
+setTimeout(()=>{
+load.style.display="none";
 document.getElementById("main").style.display="flex";
+},500);
+
 },2000);
 
 /* CLOCK */
@@ -304,26 +296,7 @@ navigator.clipboard.writeText("truongdzz1319");
 alert("Copied!");
 }
 
-/* MUSIC */
-const music=document.getElementById("music");
-
-function toggleMusic(){
-if(music.paused) music.play();
-else music.pause();
-}
-
-function setVolume(v){
-music.volume=v;
-}
-
-/* CURSOR */
-document.addEventListener("mousemove",(e)=>{
-let c=document.getElementById("cursor");
-c.style.left=e.clientX+"px";
-c.style.top=e.clientY+"px";
-});
-
-/* STAR EFFECT */
+/* STAR */
 function createStars(){
 setInterval(()=>{
 let s=document.createElement("div");
