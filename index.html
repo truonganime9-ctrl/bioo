@@ -1,77 +1,191 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chuuong Dao Bio</title>
 
-<link rel="stylesheet" href="style.css">
+<style>
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+/* ===== RESET ===== */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
 
+/* ===== VIDEO BACKGROUND ===== */
+video.bg{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:-2;
+filter:brightness(0.7) blur(1px);
+}
+
+/* DARK OVERLAY */
+.overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.35);
+z-index:-1;
+}
+
+/* ===== CENTER CARD ===== */
+.card{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:90%;
+max-width:360px;
+padding:20px;
+border-radius:20px;
+
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(15px);
+
+box-shadow:0 0 25px rgba(255,255,255,0.2);
+text-align:center;
+color:white;
+
+animation:float 4s ease-in-out infinite;
+}
+
+@keyframes float{
+0%{transform:translate(-50%,-50%) translateY(0px);}
+50%{transform:translate(-50%,-50%) translateY(-10px);}
+100%{transform:translate(-50%,-50%) translateY(0px);}
+}
+
+/* ===== AVATAR ===== */
+.avatar{
+width:110px;
+height:110px;
+border-radius:50%;
+border:3px solid white;
+box-shadow:0 0 20px pink;
+object-fit:cover;
+}
+
+/* ===== TEXT ===== */
+h1{
+margin-top:10px;
+}
+
+.typing{
+margin:10px 0;
+min-height:20px;
+color:#fff;
+}
+
+.time{
+font-size:14px;
+margin-bottom:10px;
+opacity:0.8;
+}
+
+/* ===== BUTTONS ===== */
+a,button{
+display:block;
+margin:8px 0;
+padding:10px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+text-decoration:none;
+color:white;
+background:rgba(0,0,0,0.4);
+transition:0.3s;
+}
+
+a:hover,button:hover{
+transform:scale(1.05);
+background:rgba(255,255,255,0.2);
+}
+
+/* ===== GLASS BORDER EFFECT ===== */
+.card::before{
+content:"";
+position:absolute;
+inset:0;
+border-radius:20px;
+padding:2px;
+background:linear-gradient(45deg,#ff9a9e,#a18cd1,#fad0c4,#fbc2eb);
+-webkit-mask:
+linear-gradient(#fff 0 0) content-box,
+linear-gradient(#fff 0 0);
+-webkit-mask-composite:xor;
+mask-composite:exclude;
+z-index:-1;
+}
+
+</style>
 </head>
+
 <body>
 
-<!-- LOADING -->
-<div id="loading">
-  <div class="loader"></div>
-  <h2>Loading...</h2>
-</div>
+<!-- 🎬 VIDEO BACKGROUND (MotionBGS mp4) -->
+<video class="bg" autoplay muted loop playsinline>
+<source src="bg.mp4" type="video/mp4">
+</video>
 
-<!-- PARTICLES -->
-<div id="particles-js"></div>
+<div class="overlay"></div>
 
-<!-- MAIN CARD -->
+<!-- 💎 CARD -->
 <div class="card">
 
-  <div class="logo">💗</div>
+<img class="avatar" src="avatar.jpg">
 
-  <img class="avatar" src="avatar.jpg" alt="avatar">
+<h1>Chuuong Dao</h1>
 
-  <h1>Chuuong Dao</h1>
+<div class="typing" id="typing"></div>
 
-  <p class="typing" id="typing"></p>
+<div class="time" id="time"></div>
 
-  <div class="time" id="time"></div>
+<a href="https://web.facebook.com/tr.dao91">Facebook</a>
+<a href="https://www.tiktok.com/@chia_tay_la_gi">TikTok</a>
+<a href="https://discord.gg/cpY8dFhN">Discord Server</a>
 
-  <div class="links">
-
-    <a href="https://web.facebook.com/tr.dao91" target="_blank">
-      <i class="fab fa-facebook"></i> Facebook
-    </a>
-
-    <a href="https://www.tiktok.com/@chia_tay_la_gi" target="_blank">
-      <i class="fab fa-tiktok"></i> TikTok
-    </a>
-
-    <a href="https://discord.gg/cpY8dFhN" target="_blank">
-      <i class="fab fa-discord"></i> Server Discord
-    </a>
-
-    <button onclick="copyDiscord()">
-      📋 Copy Discord: truongdzz1319
-    </button>
-
-    <button class="shop">
-      🛒 Shop Code (Coming Soon)
-    </button>
-
-  </div>
-
-  <div class="music">
-    <audio id="audio" loop>
-      <source src="music.mp3" type="audio/mp3">
-    </audio>
-
-    <button onclick="toggleMusic()">🎵 Play / Pause</button>
-    <input type="range" min="0" max="1" step="0.01" onchange="volume(this.value)">
-  </div>
+<button onclick="copy()">Copy Discord</button>
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
-<script src="script.js"></script>
+<script>
+
+/* ===== TYPING ===== */
+let text="Developer • Gamer • Cute Bio 💗";
+let i=0;
+
+function typing(){
+if(i<text.length){
+document.getElementById("typing").innerHTML+=text[i];
+i++;
+setTimeout(typing,70);
+}
+}
+typing();
+
+/* ===== CLOCK ===== */
+setInterval(()=>{
+document.getElementById("time").innerText=
+new Date().toLocaleTimeString();
+},1000);
+
+/* ===== COPY ===== */
+function copy(){
+navigator.clipboard.writeText("truongdzz1319");
+alert("Copied Discord!");
+}
+
+</script>
 
 </body>
 </html>
